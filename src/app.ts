@@ -7,9 +7,16 @@ app.use("/api/v1/tasks", tasksRoute);
 
 const PORT = 8080;
 
+const listenServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log("サーバーが起動したよ:", PORT);
+    });
+  } catch (err) {
+    console.log("サーバー起動に失敗したよ", err);
+  }
+};
+
 // サーバーをlistenにする
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log("サーバーが起動したよ:", PORT);
-  });
-});
+listenServer();

@@ -11,10 +11,5 @@ export const connectDB = async () => {
   const client = new MongoClient(DB_CONNECTION_URL);
 
   // DBに接続
-  try {
-    await client.connect();
-    console.log("DB connected");
-  } catch (err) {
-    console.log("DB connection error", err);
-  }
+  await client.connect();
 };
