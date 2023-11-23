@@ -1,9 +1,9 @@
 import express from "express";
 import { connectDB } from "./database/MongoDBConnection";
+import { router } from "./routes/tasks";
 const app = express();
 
-const tasksRoute = require("./routes/tasks");
-app.use("/api/v1/tasks", tasksRoute);
+app.use("/api/v1/tasks", router);
 
 const PORT = 8080;
 
@@ -19,4 +19,4 @@ const listenServer = async () => {
 };
 
 // サーバーをlistenにする
-listenServer();
+await listenServer();

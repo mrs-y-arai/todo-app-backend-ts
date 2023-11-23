@@ -1,15 +1,14 @@
 import dotenv from "dotenv";
-import { MongoClient, Collection, ObjectId } from "mongodb";
+import mongoose from "mongoose";
 
 // DBの接続情報の取得
 dotenv.config();
-const DB_CONNECTION_URL = process.env.DB_CONN_STRING ?? "";
+const DB_CONNECTION_URL = process.env.DB_CONNECTION_URL ?? "";
 
-export const connectDB = async () => {
+/**
+ * mongoDBに接続
+ */
+export const connectDB = async (): Promise<void> => {
   if (!DB_CONNECTION_URL) return;
-
-  const client = new MongoClient(DB_CONNECTION_URL);
-
-  // DBに接続
-  await client.connect();
+  await mongoose.connect(DB_CONNECTION_URL);
 };

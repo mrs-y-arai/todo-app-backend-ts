@@ -7,12 +7,10 @@ import {
   deleteTask,
 } from "../controllers/tasks";
 
-const router = Router();
+export const router = Router();
 
 router.get("/", getAllTasks);
 router.post("/", postTask);
 router.get("/:id", getTask);
 router.patch("/:id", updateTask);
 router.delete("/:id", deleteTask);
-
-module.exports = router;
