@@ -4,29 +4,82 @@ import { model } from "mongoose";
 
 const Task = model("Task", TaskSchema);
 
-export const getAllTasks = (req: Request, res: Response) => {
-  console.log("req", req);
-  res.status(200).send("タスクを全て取得しました。");
+/**
+ * タスクを全て取得する
+ */
+export const getAllTasks = async (req: Request, res: Response) => {
+  try {
+    const allTasks = await Task.find({});
+    res.status(200).send(`タスクを全て取得しました。${allTasks}`);
+    console.log("allTasks", allTasks);
+  } catch (err) {
+    res.status(400).send(`タスク取得失敗 ${err}`);
+  }
 };
 
-// 失敗した時の処理をやる
+/**
+ * タスクの新規登録
+ */
 export const postTask = async (req: Request, res: Response) => {
-  // console.log("req", req);
-  await Task.create({ name: req.query.name, isCompleted: false });
-  res.status(200).send(`タスクを新規作成しました。${req.query.name}`);
+  try {
+    await Task.create({ name: req.body.name, isCompleted: false });
+    res.status(200).send(`タスクを新規作成しました。${req.body.name}`);
+  } catch (err) {
+    res.status(400).send(`タスク新規作成失敗 ${err}`);
+  }
 };
 
-export const getTask = (req: Request, res: Response) => {
-  console.log("req.params", req.params);
-  res.status(200).send(`ID: ${req.params.id}のタスクを取得しました。`);
+/**
+ * タスクを1件取得する
+ */
+export const getTask = async (req: Request, res: Response) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) res.status(404).send("タスクが見つかりませんでした。");
+
+    res
+      .status(200)
+      .send(
+        `ID: ${req.params.id}のタスクを取得しました。タスク名: ${task?.name}`,
+      );
+  } catch (err) {
+    res.status(400).send(`タスク取得失敗 ${err}`);
+  }
 };
 
-export const updateTask = (req: Request, res: Response) => {
-  console.log("req.params", req.params);
-  res.status(200).send(`ID: ${req.params.id}のタスクを更新しました。`);
+/**
+ * タスク更新処理
+ */
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    const result = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    if (!result) res.status(404).send("タスクが見つかりませんでした。");
+
+    res
+      .status(200)
+      .send(
+        `ID: ${req.params.id}のタスクを更新しました。更新後の名前: ${req.body.name}`,
+      );
+  } catch (err) {
+    res.status(400).send(`タスク更新失敗 ${err}`);
+  }
 };
 
-export const deleteTask = (req: Request, res: Response) => {
-  console.log("req.params", req.params);
-  res.status(200).send(`ID: ${req.params.id}のタスクを削除しました。`);
+/**
+ * タスクの削除処理
+ */
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    const result = await Task.findByIdAndDelete(req.params.id);
+
+    if (!result) res.status(404).send("タスクが見つかりませんでした。");
+
+    res.status(200).send(`ID: ${req.params.id}のタスクを削除しました。`);
+  } catch (err) {
+    res.status(400).send(`タスク削除失敗 ${err}`);
+  }
 };

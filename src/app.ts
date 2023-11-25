@@ -2,6 +2,7 @@ import express from "express";
 import { connectDB } from "./database/MongoDBConnection";
 import { router } from "./routes/tasks";
 const app = express();
+app.use(express.json());
 
 app.use("/api/v1/tasks", router);
 
