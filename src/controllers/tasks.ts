@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TaskSchema } from "../models/Task";
+import { TaskSchema } from "../models/Task.js";
 import { model } from "mongoose";
 
 const Task = model("Task", TaskSchema);

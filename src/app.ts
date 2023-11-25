@@ -1,6 +1,6 @@
 import express from "express";
-import { connectDB } from "./database/MongoDBConnection";
-import { router } from "./routes/tasks";
+import { connectDB } from "./database/MongoDBConnection.js";
+import { router } from "./routes/tasks.js";
 const app = express();
 app.use(express.json());
 
