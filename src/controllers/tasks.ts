@@ -10,7 +10,7 @@ const Task = model("Task", TaskSchema);
 export const getAllTasks = async (req: Request, res: Response) => {
   try {
     const allTasks = await Task.find({});
-    res.status(200).send(`タスクを全て取得しました。${allTasks}`);
+    res.status(200).json(allTasks);
     console.log("allTasks", allTasks);
   } catch (err) {
     res.status(400).send(`タスク取得失敗 ${err}`);
