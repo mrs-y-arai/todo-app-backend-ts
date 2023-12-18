@@ -1,8 +1,16 @@
 import express from "express";
+import cors from "cors";
 import { connectDB } from "./database/MongoDBConnection.js";
 import { router } from "./routes/tasks.js";
+
 const app = express();
-app.use(express.json());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  optionsSuccessStatus: 200,
+};
+
+app.use(express.json(), cors(corsOptions));
 
 app.use("/api/v1/tasks", router);
 
