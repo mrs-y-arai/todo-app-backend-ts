@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { connectDB } from "./database/MongoDBConnection.js";
+import { connectDB } from "./database/libs/MongoDBConnection.js";
 import { router } from "./routes/tasks.js";
 
 const app = express();

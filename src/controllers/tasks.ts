@@ -1,15 +1,22 @@
 import { Request, Response } from "express";
-import { TaskSchema } from "../models/Task.js";
-import { model } from "mongoose";
+// import { TaskSchema } from "../entities/TaskEntity.js";
+// import { model } from "mongoose";
+import {
+  getAllTasks as _getAllTasks,
+  createTask,
+  getTaskById,
+  updateTaskById,
+  deleteTaskById,
+} from "../entities/TaskEntity.js";
 
-const Task = model("Task", TaskSchema);
+// const Task = model("Task", TaskSchema);
 
 /**
  * タスクを全て取得する
  */
 export const getAllTasks = async (req: Request, res: Response) => {
   try {
-    const allTasks = await Task.find({});
+    const allTasks = await _getAllTasks();
     res.status(200).json(allTasks);
   } catch (err) {
     res.status(400).json({ message: `タスク取得失敗 ${err}` });
@@ -21,7 +28,7 @@ export const getAllTasks = async (req: Request, res: Response) => {
  */
 export const postTask = async (req: Request, res: Response) => {
   try {
-    await Task.create({ name: req.body.name, isCompleted: false });
+    await createTask(req.body.name);
     res.status(200).json({ message: "タスクを新規作成しました。" });
   } catch (err) {
     res.status(400).json({ message: `タスク新規作成失敗 ${err}` });
@@ -33,7 +40,7 @@ export const postTask = async (req: Request, res: Response) => {
  */
 export const getTask = async (req: Request, res: Response) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await getTaskById(req.params.id);
 
     if (!task)
       res.status(404).json({ message: "タスクが見つかりませんでした。" });
@@ -51,9 +58,7 @@ export const getTask = async (req: Request, res: Response) => {
  */
 export const updateTask = async (req: Request, res: Response) => {
   try {
-    const result = await Task.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const result = await updateTaskById(req.params.id, req.body);
 
     if (!result)
       res.status(404).json({ message: "タスクが見つかりませんでした。" });
@@ -71,7 +76,7 @@ export const updateTask = async (req: Request, res: Response) => {
  */
 export const deleteTask = async (req: Request, res: Response) => {
   try {
-    const result = await Task.findByIdAndDelete(req.params.id);
+    const result = await deleteTaskById(req.params.id);
 
     if (!result)
       res.status(404).json({ message: "タスクが見つかりませんでした。" });
