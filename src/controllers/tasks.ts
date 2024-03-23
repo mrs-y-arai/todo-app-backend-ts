@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-// import { TaskSchema } from "../entities/TaskEntity.js";
-// import { model } from "mongoose";
 import {
   getAllTasks as _getAllTasks,
   createTask,
@@ -8,8 +6,6 @@ import {
   updateTaskById,
   deleteTaskById,
 } from "../entities/TaskEntity.js";
-
-// const Task = model("Task", TaskSchema);
 
 /**
  * タスクを全て取得する
